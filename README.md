@@ -21,6 +21,7 @@ Borderlands 2.
 # 3. Архитектура:
 
 Для визуализации использовать библиотеку Tkinter.
+Конкретный способ визуализации будет определен позже
 
 ### Классы:
 
@@ -42,13 +43,13 @@ Borderlands 2.
 - - или ответ ниже нужного, 1 - был близок или ответ больше нужного и 2 - ответ верный. Иначе выдает массив из -1
 
 
-Дополнительные файлы:
-Изображения каждого оружия
-Файл с описанием каждого предмета в формате
-WeaponName1 WeaponRarity1 WeaponLocation1 WeaponType1 WeaponManufacturer1 WeaponDropChance1 WeaponDLC1
-WeaponName2 WeaponRarity2 WeaponLocation2 WeaponType2 WeaponManufacturer2 WeaponDropChance2 WeaponDLC2
-WeaponName3 WeaponRarity3 WeaponLocation3 WeaponType3 WeaponManufacturer3 WeaponDropChance3 WeaponDLC3
+## Дополнительные файлы:  
 
+Изображения каждого оружия
+Файл с описанием каждого предмета в формате  
+WeaponName1 WeaponRarity1 WeaponLocation1 WeaponType1 WeaponManufacturer1 WeaponDropChance1 WeaponDLC1  
+WeaponName2 WeaponRarity2 WeaponLocation2 WeaponType2 WeaponManufacturer2 WeaponDropChance2 WeaponDLC2  
+WeaponName3 WeaponRarity3 WeaponLocation3 WeaponType3 WeaponManufacturer3 WeaponDropChance3 WeaponDLC3  
 # Пример использования:
 
 ### Загадано оружие Tinderbox  
