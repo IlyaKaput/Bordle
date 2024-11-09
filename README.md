@@ -1,11 +1,12 @@
-# 1. Суть проекта 
+# 1. Суть проекта
 
 Игра, напоминающая Wordle в плане того, что надо отгадывать объект по его свойствам. Угадывание необычного оружия из
 Borderlands 2.
 
 # 2. Свойства объекта:
 
-- Редкость (уникальное белое, уникальное синее, уникальное фиолетовое, легендарное, перламутровое, радужное, серафимское)
+- Редкость (уникальное белое, уникальное синее, уникальное фиолетовое, легендарное, перламутровое, радужное,
+  серафимское)
 - Тип (снайперская/штурмовая винтовка, дробовик, пистолет, РПГ, Пистолет-пулемет, модификатор гранат, щит)
 - Локация выпадения (множество локаций в игре)
 - Производитель (в игре много разных производителей предметов)
@@ -25,39 +26,59 @@ Borderlands 2.
 
 ### Классы:
 
-### Weapon_searcher. Класс, ищущий по названию оружия строку с его информацией в файле.
+### Comparator. Класс, содержащий методы, позволяющие сравнить ответ с правильным.
+
 Методы:
-- weapon_searcher.search(weapon_name) выдает массив значений, содержащихся в строке файла, хранящей weapon_name
 
-### Data_collector. Класс, собирающий информацию по запросу и анализирующий правильность ответа.
+- get_integer_value_of_rarity(rarity) - возвращает число, соотвтествующее редкости оружия
+- compare_rarity(rarity1, rarity2) - возвращает число -1, 0 или 1 в зависимости от того, правильно ли отгадана редкость
+  и если нет, то в какую сторону отклонение
+- compare_location(location1, dlc1, location2, dlc2) - возвращает число 0, 1 или 2 в зависимости от того, правильно ли
+  отгадана локация или близки ли локации
+- compare_boolean(type1, type2) - возвращает 0, если строковые значения отличаются. Иначе 1
+- compare_numbers(number1, number2) - аналогично compare_rarity(), но без необходимости переводить в int
+- compare_weapons(weapon1, weapon2) - выдает массив, содержащий результаты проверок всех полей оружия
+
+### Weapon_checker. Класс, собирающий информацию по запросу и анализирующий правильность ответа.
+
 - Поля:
-- - WeaponName - название загаданного оружия
-- - WeaponRarity - редкость загаданного оружия
-- - WeaponLocation - местонахождение загаданного оружия
-- - WeaponManufacturer - производитель загаданного оружия
-- - WeaponDropChance - шанс выпадения загаданного оружия
-- - WeaponDLC - дополнение, в котором наиболее высок шанс выпадения загаданного оружия
-- - Weapon_searcher
+-
+    - chosen_weapon - оружие, избранное для игры. Строка, прочитанная из WeaponInfo.csv
+-
+    - weapon_info - весь WeaponInfo.csv
 - Методы:
-- - data_collector.check(weapon_name) - если имя содержится в файле, возвращает массив из 0, 1, 2, где 0 - не угадал совсем
-- - или ответ ниже нужного, 1 - был близок или ответ больше нужного и 2 - ответ верный. Иначе выдает массив из -1
+-
+    - set_weapon(weapon) - установка избранного оружия
+-
+    - check_weapon_with_given_weapon(weapon) - возвращает результат проверки оружия с помощью Comparator.compare_weapons
+-
+    - find_weapon_index(weapon_name) - находит в WeaponInfo.csv индекс строки, содержащей информацию об оружии с таким
+      названием
+-
+    - check_weapon(weapon_name) - дает более удобный способ проверить на соответствие оружия, получая на вход только
+      строку названия
 
-
-## Дополнительные файлы:  
+## Дополнительные файлы:
 
 Изображения каждого оружия
 Файл с описанием каждого предмета в формате  
 WeaponName1 WeaponRarity1 WeaponLocation1 WeaponType1 WeaponManufacturer1 WeaponDropChance1 WeaponDLC1  
 WeaponName2 WeaponRarity2 WeaponLocation2 WeaponType2 WeaponManufacturer2 WeaponDropChance2 WeaponDLC2  
-WeaponName3 WeaponRarity3 WeaponLocation3 WeaponType3 WeaponManufacturer3 WeaponDropChance3 WeaponDLC3  
+WeaponName3 WeaponRarity3 WeaponLocation3 WeaponType3 WeaponManufacturer3 WeaponDropChance3 WeaponDLC3
+
 # Пример использования:
 
-### Загадано оружие Tinderbox  
-Его строка выглядит так:  
-- Tinderbox blue SouthernShelf Pistol Bandit 100 BaseGame  
-### Проверяется оружие Pyrophobia  
-Его строка выглядит так:  
-- Pyrophobia legendary HallowedHollow RPG Malivan 33 HeadHunterPack  
+### Загадано оружие Tinderbox
+
+Его строка выглядит так:
+
+- Tinderbox rare SouthernShelf Pistol Bandit 100 BaseGame
+
+### Проверяется оружие Pyrophobia
+
+Его строка выглядит так:
+
+- Pyrophobia legendary HallowedHollow RPG Malivan 33 HeadHunterPack
 
 Итог:  
 [0 - не угадал название,  
@@ -65,12 +86,13 @@ WeaponName3 WeaponRarity3 WeaponLocation3 WeaponType3 WeaponManufacturer3 Weapon
 0 - локации не в одном блоке  
 0 - типы разные  
 0 - производители разные  
-1 - реальная вероятность выпадения выше]  
+1 - реальная вероятность выпадения выше]
 
 ### Проверяется оружие Gub
 
-Его строка выглядит так:  
-- Gub legendary Fridge Pistol Bandit 10 BaseGame  
+Его строка выглядит так:
+
+- Gub legendary Fridge Pistol Bandit 10 BaseGame
 
 Итог:  
 [0 - название не угадано  
