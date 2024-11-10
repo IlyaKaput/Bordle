@@ -1,4 +1,5 @@
 import pandas as pd
+from random import randint
 from Comparator import Comparator
 
 class WeaponChecker:
@@ -8,6 +9,12 @@ class WeaponChecker:
     @staticmethod
     def set_weapon(weapon):
         WeaponChecker.chosen_weapon = weapon
+        print(weapon['Name'])
+
+    @staticmethod
+    def choose_random_weapon():
+        weapon_index = randint(0, round(WeaponChecker.weapon_info.size/WeaponChecker.weapon_info.iloc[0].size))
+        WeaponChecker.set_weapon(WeaponChecker.weapon_info.iloc[weapon_index])
 
     @staticmethod
     def check_weapon_with_given_weapon(weapon):
@@ -26,3 +33,11 @@ class WeaponChecker:
         if weapon_index == -1:
             return -1
         return WeaponChecker.check_weapon_with_given_weapon(WeaponChecker.weapon_info.iloc[weapon_index])
+
+    @staticmethod
+    def get_file_name(weapon_name):
+        return "pictures/"+'_'.join(weapon_name.lower().split()) + '.png'
+
+    @staticmethod
+    def get_weapon(weapon_name):
+        return WeaponChecker.weapon_info.iloc[WeaponChecker.find_weapon_index(weapon_name)]

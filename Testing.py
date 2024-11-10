@@ -1,5 +1,5 @@
 import pandas as pd
-from PIL import Image, ImageTk
+from PIL import Image
 
 weapon_info = pd.read_csv('WeaponInfo.csv', sep=';')
 for i in range(round(weapon_info.size/weapon_info.iloc[0].size)):

@@ -39,8 +39,7 @@ class Comparator:
 
     @staticmethod
     def compare_boolean(type1, type2):
-        #print(str(type1), str(type2))
-        if str(type1) == str(type2):
+        if str(type1).lower() == str(type2).lower():
             return 1
         return 0
 
