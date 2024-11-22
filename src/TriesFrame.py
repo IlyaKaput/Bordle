@@ -1,5 +1,5 @@
-from tkinter import Frame, Label
-from tkinter.constants import BOTTOM, SOLID, LEFT
+from tkinter import Frame, Label, Scrollbar
+from tkinter.constants import BOTTOM, SOLID, LEFT, RIGHT, Y
 from PIL import Image, ImageTk
 
 
@@ -8,6 +8,11 @@ class TriesFrame(Frame):
     WRONG = "#FF6666" #color of wrong answer
     RIGHT = "#66FF66" #color of right answer
     SEMI_RIGHT = "#FFFF66" #color of answer that is close to right
+    def __init__(self,master, height=0, width=0):
+        super().__init__(master, height=height, width=width)
+        self.scrollbar = None
+        self.frames = list()
+        self.game_is_over = False
 
     @staticmethod
     def resize(image):
@@ -32,15 +37,19 @@ class TriesFrame(Frame):
         :return: nothing
         """
         #frame to display weapon info
-        frame = Frame(self, width=1500, height=10, borderwidth=1, relief=SOLID)
+        frame = Frame(self, width=1200, height=50, borderwidth=2, relief=SOLID)
         #consequent calls of Visualisation methods
         self.add_weapon_picture(weapon, frame)
         self.add_weapon_name(check_results, weapon, frame)
         self.add_weapon_rarity(check_results, weapon, frame)
+        self.add_weapon_manufacturer(check_results, weapon, frame)
         self.add_weapon_location(check_results, weapon, frame)
         self.add_weapon_type(check_results, weapon, frame)
         self.add_weapon_drop_chance(check_results, weapon, frame)
         frame.pack(side=BOTTOM)
+        self.check_game_over(check_results)
+        self.update_idletasks()
+        self.master.configure(scrollregion=self.master.bbox("all"))
 
     def add_weapon_picture(self, weapon, frame):
         """
@@ -140,12 +149,41 @@ class TriesFrame(Frame):
         :return: nothing
         """
         text = str(weapon['Drop_chance'])
-        if check_results[-1] == 1:
+        if check_results[4] == 1:
             text = text + '↓'
-        elif check_results[-1] == -1:
+        elif check_results[4] == -1:
             text = text + '↑'
         bg_color = TriesFrame.WRONG
-        if check_results[-1] == 0:
+        if check_results[4] == 0:
             bg_color = TriesFrame.RIGHT
         label = Label(frame, text=f"Drop chance:\n {text}", background=bg_color, width=20, height=3)
         label.pack(side=LEFT)
+
+    def add_weapon_manufacturer(self, check_results, weapon, frame):
+        """
+                Displaying weapon manufacturer in red if it does not match with right one or in green if it is
+
+                :param check_results: results of checking a weapon
+                :param weapon: weapon information
+                :param frame: frame to be displayed
+                :return: nothing
+                """
+        bg_color = TriesFrame.WRONG
+        if check_results[5]:
+            bg_color = TriesFrame.RIGHT
+        label = Label(frame, text=weapon['Manufacturer'], background=bg_color, width=20, height=3)
+        label.pack(side=LEFT)
+
+    def check_game_over(self, test_results):
+        if test_results[0]:
+            self.game_over()
+
+    def game_over(self):
+        self.game_is_over = True
+        frame = Frame(self, width=1200, height=50, borderwidth=2, relief=SOLID)
+        label = Label(frame, text="You WIN!!!", bg=TriesFrame.RIGHT, font=("Arial", 10), width=20, height=3)
+        label.pack(fill='both')
+        frame.pack(side=BOTTOM)
+
+
+
