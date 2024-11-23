@@ -1,4 +1,4 @@
-from tkinter.constants import LEFT, RIGHT, BOTTOM, Y, BOTH
+from tkinter.constants import LEFT, RIGHT, BOTTOM, Y, BOTH, SOLID
 from tkinter import Canvas, Label, Scrollbar, Frame
 from TriesFrame import TriesFrame
 from WeaponChecker import WeaponChecker
@@ -15,12 +15,21 @@ def check_weapon(entry, tries_frame, button, root_name):
                                WeaponChecker.get_weapon(weapon_name_to_check))
     entry.delete(0, len(weapon_name_to_check))
     if tries_frame.game_is_over:
+        global game_over_window
         button['state'] = 'disabled'
-        button2 = Button(text='new game', command=lambda: new_game(root_name))
+        game_over_window = Tk()
+        frame = Frame(game_over_window, width=1200, height=50, borderwidth=2, relief=SOLID)
+        label = Label(frame, text="You WIN!!!", bg=TriesFrame.RIGHT, font=("Arial", 10), width=20, height=3)
+        label.pack(fill='both')
+        frame.pack(side=BOTTOM)
+        button2 = Button(game_over_window, text='new game', command=lambda: new_game(root_name))
         button2.pack(anchor='ne')
+        game_over_window.mainloop()
 
 def new_game(current_window):
-    current_window.destroy()  # Закрываем текущее окно
+    global game_over_window
+    current_window.destroy()
+    game_over_window.destroy()# Закрываем текущее окно
     main()
 
 

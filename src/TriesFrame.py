@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Scrollbar
+from tkinter import Frame, Label, Scrollbar, Tk
 from tkinter.constants import BOTTOM, SOLID, LEFT, RIGHT, Y
 from PIL import Image, ImageTk
 
@@ -180,10 +180,6 @@ class TriesFrame(Frame):
 
     def game_over(self):
         self.game_is_over = True
-        frame = Frame(self, width=1200, height=50, borderwidth=2, relief=SOLID)
-        label = Label(frame, text="You WIN!!!", bg=TriesFrame.RIGHT, font=("Arial", 10), width=20, height=3)
-        label.pack(fill='both')
-        frame.pack(side=BOTTOM)
 
 
 
